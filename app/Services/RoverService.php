@@ -32,7 +32,6 @@ class RoverService
         }
 
         $this->rover->save();
-
         return "($rover->x,$rover->y) $rover->direction";
     }
 

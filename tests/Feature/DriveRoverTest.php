@@ -10,42 +10,42 @@ class DriveRoverTest extends TestCase
   private array $validCommands = [
     [
       'BBRFLL', [
-        'SW' => '(4,2) SOUTH',
-        'SE' => '(4,2) SOUTH',
-        'NW' => '(4,2) SOUTH',
-        'NE' => '(4,2) SOUTH',
+        'SW' => '(-11,-20) EAST',
+        'SE' => '(9,-20) WEST',
+        'NW' => '(-11,20) SOUTH',
+        'NE' => '(9,20) NORTH',
       ]
     ],
     [
       'BB R  FL     L', [
-        'SW' => '(4,2) SOUTH',
-        'SE' => '(4,2) SOUTH',
-        'NW' => '(4,2) SOUTH',
-        'NE' => '(4,2) SOUTH',
+        'SW' => '(-11,-20) EAST',
+        'SE' => '(9,-20) WEST',
+        'NW' => '(-11,20) SOUTH',
+        'NE' => '(9,20) NORTH',
       ]
     ],
     [
       'bbrfll', [
-        'SW' => '(4,2) SOUTH',
-        'SE' => '(4,2) SOUTH',
-        'NW' => '(4,2) SOUTH',
-        'NE' => '(4,2) SOUTH',
+        'SW' => '(-11,-20) EAST',
+        'SE' => '(9,-20) WEST',
+        'NW' => '(-11,20) SOUTH',
+        'NE' => '(9,20) NORTH',
       ]
     ],
     [
       'b  br   fl     l', [
-        'SW' => '(4,2) SOUTH',
-        'SE' => '(4,2) SOUTH',
-        'NW' => '(4,2) SOUTH',
-        'NE' => '(4,2) SOUTH',
+        'SW' => '(-11,-20) EAST',
+        'SE' => '(9,-20) WEST',
+        'NW' => '(-11,20) SOUTH',
+        'NE' => '(9,20) NORTH',
       ]
     ],
     [
       'LBFFRRFFFFRRLRBFLRBFLRBF', [
-        'SW' => '(4,2) SOUTH',
-        'SE' => '(4,2) SOUTH',
-        'NW' => '(4,2) SOUTH',
-        'NE' => '(4,2) SOUTH',
+        'SW' => '(-5,-20) EAST',
+        'SE' => '(15,-20) WEST',
+        'NW' => '(-5,20) SOUTH',
+        'NE' => '(15,20) NORTH',
       ]
     ],
   ];
@@ -69,9 +69,13 @@ class DriveRoverTest extends TestCase
     $response->assertJsonPath('message', "The given data was invalid.");
 
     if(! empty(trim($invalidCommand))){
-      $response->assertJsonPath("errors.commandString.0", "The command string must only contain the letters L, R, B and F");
+      $response->assertSeeText("The command string must only contain the letters L, R, B and F");
     } else {
-      $response->assertJsonPath("errors.commandString.0", "The command string field is required.");
+      if($invalidCommand !== false){
+        $response->assertSeeText("The command string field is required.");
+      } else {
+        $response->assertSeeText("The command string must be a string.");
+      }
     }
   }
 
@@ -79,10 +83,23 @@ class DriveRoverTest extends TestCase
    * @test
    * @dataProvider rovers
    */
-  public function a__rover_can_be_driven_correctly_with_valid_commands()
+  public function a_rover_can_be_driven_correctly_with_valid_commands($x, $y, $direction, $quadrant)
   {
     foreach ($this->validCommands as $command) {
-      // test the rover
+      // test the rover and compare to expected result
+      $rover = Rover::factory()->create([
+        'x' => $x,
+        'y'=> $y,
+        'direction' => $direction
+      ]);
+
+      $response = $this->withHeaders([
+        'Accept' => 'application/json',
+      ])->patch("/rovers/$rover->id", [
+        'commandString' => $command[0]
+      ]);
+
+      $this->assertSame($command[1][$quadrant], $response->json()['current_status']);
     }
   }
 
@@ -108,20 +125,18 @@ class DriveRoverTest extends TestCase
   public function rovers(): array
   {
     return [
-      'SW_ROVER' => [
-        -10, -20, 'SOUTH'
+      'SW' => [
+        -10, -20, 'SOUTH', 'SW'
       ],
-      'SE_ROVER' => [
-        -10, -20, 'EAST'
+      'SE' => [
+        10, -20, 'NORTH', 'SE'
       ],
-      'SE_ROVER' => [
-        -10, -20, 'EAST'
+      'NW' => [
+        -10, 20, 'WEST', 'NW'
+      ],
+      'NE' => [
+        10, 20, 'EAST', 'NE'
       ],
     ];
-  }
-
-  public function edgeCaseCommands(): array
-  {
-    return [];
   }
 }

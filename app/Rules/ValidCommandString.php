@@ -25,7 +25,7 @@ class ValidCommandString implements Rule
      */
     public function passes($attribute, $value)
     {
-        return !empty($value) && empty(str_replace(['L', 'R', 'B', 'F'], '', $value));
+        return is_string($value) && !empty($value) && empty(str_replace(['L', 'R', 'B', 'F'], '', $value));
     }
 
     /**

@@ -42,9 +42,8 @@ class RoverTest extends TestCase
      */
     public function requesting_a_rover_that_doesnt_exist_returns_not_found()
     {
-        $notARover = Rover::latest()->first()->id + 1;
+        $notARover = Rover::orderBy('id', 'DESC')->first()->id + 1;
         $response = $this->get("/rovers/$notARover");
-        $response->assertNotFound();
         $response->assertSeeText('404');
         $response->assertSeeText('Not Found');
     }
