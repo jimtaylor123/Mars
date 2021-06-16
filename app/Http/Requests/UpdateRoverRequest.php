@@ -10,7 +10,7 @@ class UpdateRoverRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'commandString' => strtoupper($this->commandString),
+            'commandString' => strtoupper(str_replace(" ", "", $this->commandString)),
         ]);
     }
 

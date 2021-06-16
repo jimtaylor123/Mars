@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rover;
+use App\Services\RoverService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoverResource;
 use App\Http\Resources\RoverCollection;
@@ -11,6 +12,13 @@ use App\Http\Requests\UpdateRoverRequest;
 
 class RoverController extends Controller
 {
+    private RoverService $roverService;
+
+    public function __construct(RoverService $roverService)
+    {
+        $this->roverService = $roverService;
+    }
+
     public function index()
     {
         return RoverCollection::make(Rover::all())->additional([
@@ -36,7 +44,13 @@ class RoverController extends Controller
 
     public function update(UpdateRoverRequest $request, Rover $rover)
     {
-        dd($request->toArray());
+        $statusString = $this->roverService->drive($rover, $request->commandString);
+
+        return response()->json([
+            'rover_id' => $rover->id,
+            'current_status' => $statusString,
+            'reported_at' => now()->toDateTimeString()
+        ]);
     }
 
 }
