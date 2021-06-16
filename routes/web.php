@@ -16,3 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('rovers')->group(function(){
+    Route::get('/', [RoverController::class, 'index']);
+    Route::post('/', [RoverController::class, 'store']);
+    Route::get('/{rover}', [RoverController::class, 'show']);
+    Route::patch('/{rover}', [RoverController::class, 'update']);
+});
