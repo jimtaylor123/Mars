@@ -22,8 +22,8 @@ class RoverFactory extends Factory
     public function definition()
     {
         return [
-            'x' => $this->faker->randomNumber(2,false),
-            'y' => $this->faker->randomNumber(2,false),
+            'x' => $this->faker->numberBetween(0,100) * $this->faker->randomElement([1, -1]),
+            'y' => $this->faker->numberBetween(0,100) * $this->faker->randomElement([1, -1]),
             'direction' => $this->faker->randomElement(config('rovers.directions')),
         ];
     }
