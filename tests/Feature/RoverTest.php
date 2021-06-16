@@ -56,11 +56,37 @@ class RoverTest extends TestCase
     {
         $data = Rover::factory()->raw();
         $response = $this->post('/rovers', $data);
-        $response->assertSuccessful();
+        $response->assertStatus(201);
         $response->assertJsonPath('message', "Great news, you've just created a new Rover!");
         $response->assertJsonCount(6, 'data');
         $this->assertEquals($response->json()['data']['x'], $data['x']);
         $this->assertEquals($response->json()['data']['y'], $data['y']);
         $this->assertEquals($response->json()['data']['direction'], $data['direction']);
+    }
+
+     /**
+     * @test
+     * @dataProvider requiredRoverCreationData
+     */
+    public function cant_create_a_rover_without_the_right_data(string $field)
+    {
+        $data = Rover::factory()->raw();
+        unset($data[$field]);
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->post('/rovers', $data);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonPath('message', "The given data was invalid.");
+        $response->assertJsonPath("errors.$field.0", "The $field field is required.");
+    }
+
+    public function requiredRoverCreationData(): array
+    {
+        return [
+           ['x'], ['y'], ['direction']
+        ];
     }
 }
