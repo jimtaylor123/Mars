@@ -2,18 +2,16 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidCommandString;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRoverRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    protected function prepareForValidation(): void
     {
-        return false;
+        $this->merge([
+            'commandString' => strtoupper($this->commandString),
+        ]);
     }
 
     /**
@@ -24,7 +22,11 @@ class UpdateRoverRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'commandString' => [
+                'required',
+                'string',
+                new ValidCommandString(),
+            ],
         ];
     }
 }

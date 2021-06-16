@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rover;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoverResource;
 use App\Http\Resources\RoverCollection;
@@ -37,7 +36,7 @@ class RoverController extends Controller
 
     public function update(UpdateRoverRequest $request, Rover $rover)
     {
-        //
+        dd($request->toArray());
     }
 
 }

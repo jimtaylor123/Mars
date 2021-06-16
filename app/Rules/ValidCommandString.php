@@ -4,7 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class ValidDirection implements Rule
+class ValidCommandString implements Rule
 {
     /**
      * Create a new rule instance.
@@ -25,7 +25,7 @@ class ValidDirection implements Rule
      */
     public function passes($attribute, $value)
     {
-        return in_array(strtoupper($value), config('rovers.directions'));
+        return !empty($value) && empty(str_replace(['L', 'R', 'B', 'F'], '', $value));
     }
 
     /**
@@ -35,11 +35,6 @@ class ValidDirection implements Rule
      */
     public function message()
     {
-        $directions = implode(", ", config('rovers.directions'));
-
-        return sprintf(
-            'Please provide a valid direction from the following selection: %s.',
-            $directions
-        );
+        return 'The command string must only contain the letters L, R, B and F';
     }
 }
