@@ -2,18 +2,16 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidDirection;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRoverRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    protected function prepareForValidation(): void
     {
-        return false;
+        $this->merge([
+            'direction' => strtoupper($this->direction),
+        ]);
     }
 
     /**
@@ -24,7 +22,19 @@ class StoreRoverRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'x' => [
+                'required',
+                'numeric',
+            ],
+            'y' => [
+                'required',
+                'numeric',
+            ],
+            'direction' => [
+                'required',
+                'string',
+                new ValidDirection(),
+            ],
         ];
     }
 }

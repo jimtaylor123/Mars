@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Rover;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\RoverResource;
 use App\Http\Resources\RoverCollection;
+use App\Http\Requests\StoreRoverRequest;
+use App\Http\Requests\UpdateRoverRequest;
 
 class RoverController extends Controller
 {
@@ -16,9 +19,13 @@ class RoverController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreRoverRequest $request)
     {
-        //
+        $rover = Rover::create($request->validated());
+
+        return RoverResource::make($rover)->additional([
+            'message' => 'Great news, you\'ve just created a new Rover!',
+        ]);
     }
 
     public function show(Rover $rover)
@@ -28,7 +35,7 @@ class RoverController extends Controller
         ]);
     }
 
-    public function update(Request $request, Rover $rover)
+    public function update(UpdateRoverRequest $request, Rover $rover)
     {
         //
     }
