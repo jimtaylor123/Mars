@@ -14,9 +14,10 @@ This application uses Laravel - you can find more information about the framewor
 ## Set up
 
 1. Unzip file or clone from github: `git clone https://github.com/jimtaylor123/Mars`
-2. Run set up migrations: `php artisan migrate:fresh --seed`
-3. Run local server: `php artisan serve`
-4. You should now be able to see the running application at http://localhost:8000
+2. Run composer install: `composer install`
+3. Run set up migrations: `php artisan migrate:fresh --seed`
+4. Run local server: `php artisan serve`
+5. You should now be able to see the running application at http://localhost:8000
 
 ## Use 
 
