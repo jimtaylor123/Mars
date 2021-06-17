@@ -37,12 +37,38 @@ class RoverService
 
     private function reverse()
     {
-        $this->rover->x -= 1;
+        switch ($this->rover->direction) {
+            case 'NORTH':
+                $this->rover->y -= 1;
+                break;
+            case 'EAST':
+                $this->rover->x -= 1;
+                break;
+            case 'SOUTH':
+                $this->rover->y += 1;
+                break;
+            case 'WEST':
+                $this->rover->x += 1;
+                break;
+        }
     }
 
     private function advance()
-    {
-        $this->rover->x += 1;
+    { 
+        switch ($this->rover->direction) {
+            case 'NORTH':
+                $this->rover->y += 1;
+                break;
+            case 'EAST':
+                $this->rover->x += 1;
+                break;
+            case 'SOUTH':
+                $this->rover->y -= 1;
+                break;
+            case 'WEST':
+                $this->rover->x -= 1;
+                break;
+        }
     }
 
     private function turnRight()

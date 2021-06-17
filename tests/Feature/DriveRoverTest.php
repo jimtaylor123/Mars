@@ -10,42 +10,42 @@ class DriveRoverTest extends TestCase
   private array $validCommands = [
     [
       'BBRFLL', [
-        'SW' => '(-11,-20) EAST',
-        'SE' => '(9,-20) WEST',
-        'NW' => '(-11,20) SOUTH',
-        'NE' => '(9,20) NORTH',
+        'SW' => '(-11,-18) EAST',
+        'SE' => '(11,-22) WEST',
+        'NW' => '(-8,21) SOUTH',
+        'NE' => '(8,19) NORTH',
       ]
     ],
     [
       'BB R  FL     L', [
-        'SW' => '(-11,-20) EAST',
-        'SE' => '(9,-20) WEST',
-        'NW' => '(-11,20) SOUTH',
-        'NE' => '(9,20) NORTH',
+        'SW' => '(-11,-18) EAST',
+        'SE' => '(11,-22) WEST',
+        'NW' => '(-8,21) SOUTH',
+        'NE' => '(8,19) NORTH',
       ]
     ],
     [
       'bbrfll', [
-        'SW' => '(-11,-20) EAST',
-        'SE' => '(9,-20) WEST',
-        'NW' => '(-11,20) SOUTH',
-        'NE' => '(9,20) NORTH',
+        'SW' => '(-11,-18) EAST',
+        'SE' => '(11,-22) WEST',
+        'NW' => '(-8,21) SOUTH',
+        'NE' => '(8,19) NORTH',
       ]
     ],
     [
       'b  br   fl     l', [
-        'SW' => '(-11,-20) EAST',
-        'SE' => '(9,-20) WEST',
-        'NW' => '(-11,20) SOUTH',
-        'NE' => '(9,20) NORTH',
+        'SW' => '(-11,-18) EAST',
+        'SE' => '(11,-22) WEST',
+        'NW' => '(-8,21) SOUTH',
+        'NE' => '(8,19) NORTH',
       ]
     ],
     [
       'LBFFRRFFFFRRLRBFLRBFLRBF', [
-        'SW' => '(-5,-20) EAST',
-        'SE' => '(15,-20) WEST',
-        'NW' => '(-5,20) SOUTH',
-        'NE' => '(15,20) NORTH',
+        'SW' => '(-13,-20) EAST',
+        'SE' => '(13,-20) WEST',
+        'NW' => '(-10,23) SOUTH',
+        'NE' => '(10,17) NORTH',
       ]
     ],
   ];
